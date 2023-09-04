@@ -9,7 +9,7 @@ def Display_Rules() -> None:
     rules = """
     Player 1 gets to choose 5 words. 1 word will be choosen at random. Each word will be between 4 and 8 characters long
 
-    Player 2 must select letters in the word that is presented. It will be presented as a series of underscores
+    Player 2 must select letters in the word that is presented. It will be presented as a series of underscores. You get three extra guesses.
 
     For each letter that player two guesses wrong, an additional body part will be drawn in
 
