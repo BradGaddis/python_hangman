@@ -5,7 +5,7 @@ word: str
 numguesses: str
 guesses = [] 
 
-def PrintRules():
+def Display_Rules() -> None:
     rules = """
     Player 1 gets to choose 5 words. 1 word will be choosen at random. Each word will be between 4 and 8 characters long
 
@@ -19,25 +19,19 @@ def PrintRules():
 
     """
     print(rules)
-    return rules
 
 def PickWords() -> list:
-    
     """
     Player 1 chooses 5 words via the input. Returns a list
     """
-
     print("Player 1: Please choose 5 words between 4 and 8 characters long")
     wordList = []
     while len(wordList) < 5:
         word = input()
-        check: bool = True
         for letter in word:
             if not letter.isalpha() or letter.isnumeric():
-                check = False
-        if not check:
-            print("Please only use alphabetical letters")
-            continue
+                print("Please only use alphabetical letters")
+                continue
         if len(word) < 4 or len(word) > 8:
             print("Please enter a word between 4 and 8 characters long")
             continue
@@ -48,7 +42,10 @@ def PickWords() -> list:
 
     return wordList
 
-def SetUp(words: list) -> str:
+def SetUp(words: list) -> None:
+    """
+    Sets up the game structure. Resets everything if game is restarted,
+    """
     global word
     global chances 
     global numguesses
@@ -58,9 +55,8 @@ def SetUp(words: list) -> str:
     word = words[random.randrange(0,4)]
     chances = ''.join(["_" for l in range(len(word))])
     numguesses = 0
-    return word
 
-def TakeTurn():
+def TakeTurn() -> None:
     """
     For Player two, advances a turn. Allows player two to make a guess and updates the score
     """
@@ -80,19 +76,21 @@ def TakeTurn():
         if guess.isalpha() and not guess.isnumeric() and not len(guess) > 1:
             numguesses += 1
             guesses.append(guess)
-            index = checkletter(guess)
+            index = check_guessed_letter(guess)
             if index > -1:
-                updateChances(guess, index)
+                update_chances(guess, index)
             break
     print("\n")
 
-def updateChances(letter: chr, index: int):
+def update_chances(letter: chr, index: int) -> None:
+    "Updates the underscores and chances state variable"
     global chances
     chances = list(chances)
     chances[index] = letter
     chances = "".join(chances)
 
-def checkletter(guess: chr):
+def check_guessed_letter(guess: chr) -> int:
+    "Checks if the guessed letter is valid and should be updated"
     global word
     for i in range(0, len(word)):
         l = word[i]
@@ -101,13 +99,15 @@ def checkletter(guess: chr):
     return -1
 
 
-def GameLoop():
+def GameLoop() -> None:
+    "The main body of the game. Continues looping until the game is over"
     while not GameOver(): 
         TakeTurn()
         if GameOver():
             break
 
-def GameOver():
+def GameOver() -> bool:
+    "Determines if the game should continue or not on each turn."
     global numguesses
     global word
     if numguesses >= len(word) + 3 and "_" in chances:
@@ -125,17 +125,18 @@ def GameOver():
             return True
     return False
 
-def Replay():
+def Replay() -> bool:
+    "Checks to see if the player wants to continue after the game has ended"
     replay = True if input("Try again? y/n: ") == "y" else False
     if not replay:
         print("See you next time!")
     return replay
 
 
-def Main():
-    PrintRules()
+def Main() -> None:
+    Display_Rules()
     global word
-    word = SetUp(PickWords())
+    SetUp(PickWords())
     GameLoop()
 
 if __name__ == '__main__':
