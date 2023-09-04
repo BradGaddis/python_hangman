@@ -85,9 +85,8 @@ def TakeTurn() -> None:
 def update_chances(letter: chr, index: int) -> None:
     "Updates the underscores and chances state variable"
     global chances
-    chances = list(chances)
-    chances[index] = letter
-    chances = "".join(chances)
+    chances = chances.replace(chances[index], letter, 1)
+
 
 def check_guessed_letter(guess: chr) -> int:
     "Checks if the guessed letter is valid and should be updated"
