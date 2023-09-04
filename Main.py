@@ -7,6 +7,7 @@ word: str
 numguesses: str
 guesses = [] 
 num_wrong: int
+allowed_guesses: int
 
 def Display_Rules() -> None:
     rules = """
@@ -57,10 +58,12 @@ def SetUp(words: list) -> None:
     global numguesses
     global guesses 
     global num_wrong    
+    global allowed_guesses
 
     guesses = []
     num_wrong = 0
     word = words[random.randrange(0,4)]
+    allowed_guesses = len(word) + 3
     chances = ''.join(["_" for l in range(len(word))])
     numguesses = 0
 
@@ -93,7 +96,6 @@ def TakeTurn() -> None:
                 update_chances(guess, index)
             else:
                 num_wrong += 1
-                print(num_wrong)
             break
     print("\n")
 
@@ -123,9 +125,10 @@ def GameLoop() -> None:
 def GameOver() -> bool:
     "Determines if the game should continue or not on each turn."
     global num_wrong
-
+    global allowed_guesses
     global word
-    if num_wrong >= len(word) + 3 and "_" in chances:
+
+    if num_wrong >= allowed_guesses and "_" in chances:
             if Replay():
                 SetUp(PickWords())
             else:
@@ -149,18 +152,22 @@ def Replay() -> bool:
 
 def Display_Hangman():
     global num_wrong
+    global allowed_guesses
+
     gallos_top = "---\n    |\n    \n"
 
-
+    print(f"You have used {num_wrong} attempts.\nYou have {allowed_guesses-num_wrong} attempts left")
     hangman = [" ", "-", "-", "-", "\n" , "|", " ", 
             " ", " ", "|", "\n", " ", "-", "-", "-"
             "\n", "/", "|", " ", " ", "|", "\\"
             "\n"," ", "_", "_", "_",
             "\n", "|", " ", " ", " ", "|", "\n"
             ]
+    percent_array_to_display = num_wrong / allowed_guesses
+    amount = (percent_array_to_display * len(hangman)) 
+    split_hangman = hangman[0: int(amount)]
 
-    amount = hangman[0: int(num_wrong / len(hangman) * 100)]
-    print(gallos_top + "".join(amount))
+    print(gallos_top + "".join(split_hangman))
 
 def Main() -> None:
     Display_Rules()
