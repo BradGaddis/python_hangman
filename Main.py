@@ -148,7 +148,10 @@ def Replay() -> bool:
     print(f"The word was: {word}")
     Display_Hangman()
     print(" ".join([l + " " for l in chances]))
-    replay = True if input("Try again? y/n: ") == "y" else False
+    input = input("Try again? y/n: ")
+    if not input == "y":
+        print("We will take that as a 'no'...")
+    replay = True if input == "y" else False
     if not replay:
         print("See you next time!")
     return replay
