@@ -102,7 +102,9 @@ def TakeTurn() -> None:
 def update_chances(letter: chr, index: int) -> None:
     "Updates the underscores and chances state variable"
     global chances
-    chances = chances.replace(chances[index], letter, 1)
+    chances = list(chances)
+    chances[index] = letter
+    chances = "".join(chances)
 
 
 def check_guessed_letter(guess: chr) -> int:
@@ -145,6 +147,7 @@ def Replay() -> bool:
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"The word was: {word}")
     Display_Hangman()
+    print(" ".join([l + " " for l in chances]))
     replay = True if input("Try again? y/n: ") == "y" else False
     if not replay:
         print("See you next time!")
