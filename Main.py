@@ -23,8 +23,11 @@ def Display_Rules() -> None:
 
     Have fun!
 
-    """
+    """ 
+
     print(rules)
+    input("press any key to contiue")
+
 
 def PickWords() -> list:
     """
